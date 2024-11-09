@@ -8366,6 +8366,7 @@ GameObject:
   - component: {fileID: 1468389274}
   - component: {fileID: 1468389273}
   - component: {fileID: 1468389272}
+  - component: {fileID: 1468389275}
   m_Layer: 0
   m_Name: Eagle
   m_TagString: Untagged
@@ -8461,6 +8462,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1468389275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468389271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff05fbd35dd4454b818897514ca8817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 0.1
+  moveRange: 1
 --- !u!1001 &1671669980
 PrefabInstance:
   m_ObjectHideFlags: 0
