@@ -1,18 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControler : MonoBehaviour
 {
-    // Start is called before the first frame update
-
-    [Header("Movement parameters" )]
-    [Range(0.01f, 20.0f)] [SerializeField] private float moveSpeed = 0.1f;
-    [Range(0.01f, 20.0f)] [SerializeField] private float jumpSpeed = 6.0f;
+    [Header("Movement parameters")]
+    [Range(0.01f, 20.0f)][SerializeField] private float moveSpeed = 0.1f;
+    [Range(0.01f, 20.0f)][SerializeField] private float jumpSpeed = 6.0f;
 
     private Rigidbody2D rigidBody;
-
     private Animator animator;
+    private Collider2D playerCollider;
 
     public LayerMask GroundLayer;
 
@@ -25,27 +21,21 @@ public class PlayerControler : MonoBehaviour
     private bool isLadder = false;
 
     private int score = 0;
-
     private float vertical = 0;
-
-    void Start()
-    {
-        
-    }
 
     void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        playerCollider = GetComponent<Collider2D>(); // Get the player's collider
     }
 
-    // Update is called once per frame
     void Update()
     {
         bool isWalking = false;
         vertical = Input.GetAxis("Vertical");
 
-        if (isLadder && System.Math.Abs(vertical) > 0)
+        if (isLadder && Mathf.Abs(vertical) > 0)
         {
             isClimbing = true;
         }
@@ -73,8 +63,6 @@ public class PlayerControler : MonoBehaviour
             jump();
         }
 
-
-
         if (rayCastVisable)
             Debug.DrawRay(transform.position, RayLength * Vector3.down, Color.white, 1, false);
 
@@ -89,17 +77,26 @@ public class PlayerControler : MonoBehaviour
         if (isClimbing)
         {
             rigidBody.gravityScale = 0;
+            if (!isGrounded())
+            {
+                rigidBody.isKinematic = true;
+            }
+            else
+            {
+                rigidBody.isKinematic = false;
+            }
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, vertical * moveSpeed);
         }
         else
         {
+            rigidBody.isKinematic = false;
             rigidBody.gravityScale = 1.2f;
         }
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if(col.gameObject.tag == "FallLevel")
+        if (col.gameObject.tag == "FallLevel")
         {
             Debug.Log("Player fell from The level");
         }
@@ -130,9 +127,7 @@ public class PlayerControler : MonoBehaviour
     {
         isFacingRight = !isFacingRight;
         Vector3 theScale = transform.localScale;
-
         theScale.x *= -1;
-
         transform.localScale = theScale;
     }
 
@@ -149,5 +144,4 @@ public class PlayerControler : MonoBehaviour
             Debug.Log("jumping");
         }
     }
-
 }

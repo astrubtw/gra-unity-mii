@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour
     [Range(0.01f, 20.0f)] [SerializeField] private float moveSpeed = 0.1f;
     [Range(1f, 20.0f)] [SerializeField] private float moveRange = 1f;
 
-    private bool isFacingRight = true;
+    private bool isFacingRight = false;
 
     private Animator animator;
 
@@ -22,7 +22,30 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (isFacingRight)
+        {
+            if(this.transform.position.x < startPositionX + moveRange)
+            {
+                MoveRight();
+            }
+            else
+            {
+                Flip();
+                MoveLeft();
+            }
+        }
+        else
+        {
+            if (this.transform.position.x > startPositionX - moveRange)
+            {
+                MoveLeft();
+            }
+
+            else {
+                Flip();
+                MoveRight();
+            }
+        }
     }
 
     void Awake()
