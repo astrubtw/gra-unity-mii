@@ -24,7 +24,7 @@ public class EnemyController : MonoBehaviour
     {
         if (isFacingRight)
         {
-            if(this.transform.position.x < startPositionX + moveRange)
+            if (this.transform.position.x < startPositionX + moveRange)
             {
                 MoveRight();
             }
@@ -34,14 +34,13 @@ public class EnemyController : MonoBehaviour
                 MoveLeft();
             }
         }
-        else
-        {
+        else {
             if (this.transform.position.x > startPositionX - moveRange)
             {
                 MoveLeft();
             }
-
-            else {
+            else
+            {
                 Flip();
                 MoveRight();
             }
