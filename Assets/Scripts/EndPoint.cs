@@ -14,7 +14,8 @@ public class EndPoint : MonoBehaviour
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Game over");
+            
+            //Debug.Log("Game over");
         }
     }
 

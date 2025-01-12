@@ -4,25 +4,53 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    [Range(0.01f, 20.0f)] [SerializeField] private float moveSpeed = 0.1f;
-    [Range(1f, 20.0f)] [SerializeField] private float moveRange = 1f;
+    [Range(0.01f, 20.0f)][SerializeField] private float moveSpeed = 0.1f;
+    [Range(1f, 20.0f)][SerializeField] private float moveRange = 1f;
 
-    private bool isFacingRight = true;
+    private bool isFacingRight = false;
 
     private Animator animator;
 
     private float startPositionX;
 
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (GameManager.instance.currentGameState != GameManager.GameState.GAME)
+        {
+            return;
+        }
+        if (isFacingRight)
+        {
+            if (this.transform.position.x < startPositionX + moveRange)
+            {
+                MoveRight();
+            }
+            else
+            {
+                Flip();
+                MoveLeft();
+            }
+        }
+        else
+        {
+            if (this.transform.position.x > startPositionX - moveRange)
+            {
+                MoveLeft();
+            }
+            else
+            {
+                Flip();
+                MoveRight();
+            }
+        }
     }
 
     void Awake()
@@ -55,5 +83,24 @@ public class EnemyController : MonoBehaviour
         theScale.x *= -1;
 
         transform.localScale = theScale;
+    }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.CompareTag("Player") && transform.position.y < col.gameObject.transform.position.y) {
+            GetComponent<Collider2D>().enabled = false;
+            animator.SetBool("isDead", true);
+            StartCoroutine(KillOnAnimationEnd());
+        }
+    }
+
+    IEnumerator KillOnAnimationEnd()
+    {
+        AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+
+        float animationLength = (clipInfo[0].clip.length + 0.2f);
+        yield return new WaitForSeconds(animationLength);
+
+        this.gameObject.SetActive(false);
     }
 }
