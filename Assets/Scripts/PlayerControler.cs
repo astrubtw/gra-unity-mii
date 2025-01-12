@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -129,7 +130,7 @@ public class PlayerControler : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if(col.gameObject.tag == "FallLevel")
+        if (col.CompareTag("FallLevel"))
         {
             lives--;
             transform.position = startPosition;
@@ -168,7 +169,9 @@ public class PlayerControler : MonoBehaviour
         }
 
         if (col.CompareTag("Enemy")){
-            if (transform.position.y > col.gameObject.transform.position.y)
+            float height = col.GetComponent<SpriteRenderer>().bounds.size.y / 2.0f;
+
+            if (transform.position.y > col.gameObject.transform.position.y + height)
             {
                 Debug.Log("Killed an enemy");
                 forcedJump();

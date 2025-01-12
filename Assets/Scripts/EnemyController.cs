@@ -87,7 +87,9 @@ public class EnemyController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.CompareTag("Player") && transform.position.y < col.gameObject.transform.position.y) {
+        float height = col.GetComponent<SpriteRenderer>().bounds.size.y / 2.0f;
+        
+        if (col.CompareTag("Player") && transform.position.y + height < col.gameObject.transform.position.y) {
             GetComponent<Collider2D>().enabled = false;
             animator.SetBool("isDead", true);
             StartCoroutine(KillOnAnimationEnd());
